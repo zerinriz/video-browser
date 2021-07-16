@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
 import SearchBar from "./components/SearchBar";
@@ -7,68 +7,61 @@ import VideoList from "./components/VideoList";
 import VideoDetail from "./components/VideoDetail";
 import { Segment } from "semantic-ui-react";
 
-export default class App extends React.Component {
-  state = {
-    videosMetaInfo: [],
-    selectedVideoId: null,
-    selectedVideoTitle: null,
-    selectedVideoDesc: null,
+const App = () => {
+  const [videosMetaInfo, setVideosMetaInfo] = useState([]);
+  const [selectedVideoId, setSelectedVideoId] = useState(null);
+  const [selectedVideoTitle, setSelectedVideoTitle] = useState(null);
+  const [selectedVideoDesc, setSelectedVideoDesc] = useState(null);
+
+  useEffect(() => {
+    onSearch("RickRoll");
+  }, []);
+
+  const onVideoSelected = (videoId) => {
+    setSelectedVideoId(videoId);
   };
 
-  onVideoSelected = (videoId) => {
-    this.setState({
-      selectedVideoId: videoId,
-    });
+  const onTitleSelected = (videoTitle) => {
+    selectedVideoTitle(videoTitle);
   };
 
-  onTitleSelected = (videoTitle) => {
-    this.setState({
-      selectedVideoTitle: videoTitle,
-    });
+  const onDescSelected = (videoDesc) => {
+    setSelectedVideoDesc(videoDesc);
   };
 
-  onDescSelected = (videoDesc) => {
-    this.setState({
-      selectedVideoDesc: videoDesc,
-    });
-  };
-
-  onSearch = async (keyword) => {
+  const onSearch = async (keyword) => {
     const response = await youtubeApi.get("/search", {
       params: {
         q: keyword,
       },
     });
-    this.setState({
-      videosMetaInfo: response.data.items,
-      selectedVideoId: response.data.items[0].id.videoId,
-      selectedVideoTitle: response.data.items[0].snippet.title,
-      selectedVideoDesc: response.data.items[0].snippet.description,
-    });
-    console.log(this.state);
+    setVideosMetaInfo(response.data.items);
+    setSelectedVideoId(response.data.items[0].id.videoId);
+    setSelectedVideoTitle(response.data.items[0].snippet.title);
+    setSelectedVideoDesc(response.data.items[0].snippet.description);
   };
 
-  render() {
-    return (
-      <div className="App">
-        <Segment basic inverted padded="very" textAlign="center">
-          <h1>Video Browser</h1>
-        </Segment>
-        <Segment textAlign="center">
-          <SearchBar onSearch={this.onSearch}   />
-        </Segment>
-        <VideoList
-          onDescSelected={this.onDescSelected}
-          onTitleSelected={this.onTitleSelected}
-          onVideoSelected={this.onVideoSelected}
-          data={this.state.videosMetaInfo}
-        />
-        <VideoDetail
-          videoDesc={this.state.selectedVideoDesc}
-          videoId={this.state.selectedVideoId}
-          videoTitle={this.state.selectedVideoTitle}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      <Segment basic inverted padded="very" textAlign="center">
+        <h1>Video Browser</h1>
+      </Segment>
+      <Segment textAlign="center">
+        <SearchBar onSearch={onSearch} />
+      </Segment>
+      <VideoList
+        onDescSelected={onDescSelected}
+        onTitleSelected={onTitleSelected}
+        onVideoSelected={onVideoSelected}
+        data={videosMetaInfo}
+      />
+      <VideoDetail
+        videoDesc={selectedVideoDesc}
+        videoId={selectedVideoId}
+        videoTitle={selectedVideoTitle}
+      />
+    </div>
+  );
+};
+
+export default App;
