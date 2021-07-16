@@ -1,14 +1,41 @@
 import React from "react";
 import { Image, Segment } from "semantic-ui-react";
 
-function selectVideo(videoIdObj, onVideoSelected) {
+function selectVideo(
+  videoIdObj,
+  onVideoSelected,
+  videoSnippet,
+  onTitleSelected,
+  onDescSelected
+) {
+  onDescSelected(videoSnippet.description);
   onVideoSelected(videoIdObj.videoId);
+  onTitleSelected(videoSnippet.title);
+  console.log(videoSnippet);
 }
 
-function constructVideoTitles(vidoesData, onVideoSelected) {
+function constructVideoTitles(
+  vidoesData,
+  onVideoSelected,
+  onTitleSelected,
+  onDescSelected
+) {
   return vidoesData.map(({ snippet, id }, index) => {
+    console.log(vidoesData);
     return (
-      <Segment  size="mini" key={index} onClick={() => selectVideo(id, onVideoSelected)}>
+      <Segment
+        size="mini"
+        key={index}
+        onClick={() =>
+          selectVideo(
+            id,
+            onVideoSelected,
+            snippet,
+            onTitleSelected,
+            onDescSelected
+          )
+        }
+      >
         <Image
           centered
           size="large"
@@ -20,8 +47,22 @@ function constructVideoTitles(vidoesData, onVideoSelected) {
     );
   });
 }
-const VideoItem = ({ data, onVideoSelected }) => {
-  return <>{constructVideoTitles(data, onVideoSelected)}</>;
+const VideoItem = ({
+  data,
+  onVideoSelected,
+  onTitleSelected,
+  onDescSelected,
+}) => {
+  return (
+    <>
+      {constructVideoTitles(
+        data,
+        onVideoSelected,
+        onTitleSelected,
+        onDescSelected
+      )}
+    </>
+  );
 };
 
 export default VideoItem;

@@ -3,14 +3,17 @@ import { Form, Input } from "semantic-ui-react";
 
 class SearchBar extends React.Component {
   state = { title: "" };
+
   onSearchChanged = (event) => {
     const _title = event.target.value;
     this.setState({ title: _title });
   };
+
   onSubmit = (event) => {
     event.preventDefault();
     this.props.onSearch(this.state.title);
   };
+
   render() {
     return (
       <div>

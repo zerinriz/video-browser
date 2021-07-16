@@ -11,11 +11,25 @@ export default class App extends React.Component {
   state = {
     videosMetaInfo: [],
     selectedVideoId: null,
+    selectedVideoTitle: null,
+    selectedVideoDesc: null,
   };
 
   onVideoSelected = (videoId) => {
     this.setState({
       selectedVideoId: videoId,
+    });
+  };
+
+  onTitleSelected = (videoTitle) => {
+    this.setState({
+      selectedVideoTitle: videoTitle,
+    });
+  };
+
+  onDescSelected = (videoDesc) => {
+    this.setState({
+      selectedVideoDesc: videoDesc,
     });
   };
 
@@ -28,9 +42,12 @@ export default class App extends React.Component {
     this.setState({
       videosMetaInfo: response.data.items,
       selectedVideoId: response.data.items[0].id.videoId,
+      selectedVideoTitle: response.data.items[0].snippet.title,
+      selectedVideoDesc: response.data.items[0].snippet.description,
     });
     console.log(this.state);
   };
+
   render() {
     return (
       <div className="App">
@@ -38,13 +55,19 @@ export default class App extends React.Component {
           <h1>Video Browser</h1>
         </Segment>
         <Segment textAlign="center">
-          <SearchBar onSearch={this.onSearch} />
+          <SearchBar onSearch={this.onSearch}   />
         </Segment>
         <VideoList
+          onDescSelected={this.onDescSelected}
+          onTitleSelected={this.onTitleSelected}
           onVideoSelected={this.onVideoSelected}
           data={this.state.videosMetaInfo}
         />
-        <VideoDetail videoId={this.state.selectedVideoId} />
+        <VideoDetail
+          videoDesc={this.state.selectedVideoDesc}
+          videoId={this.state.selectedVideoId}
+          videoTitle={this.state.selectedVideoTitle}
+        />
       </div>
     );
   }
