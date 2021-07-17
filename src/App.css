@@ -40,3 +40,12 @@
   max-width: 200px;
   margin-bottom: 270px;
 }
+.video {
+  height: 550px;
+}
+.title-desc {
+  top: 500px;
+  right: 0px;
+  margin-bottom: 300;
+  margin-top: -150px;
+}

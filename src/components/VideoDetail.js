@@ -3,14 +3,14 @@ import { Embed } from "semantic-ui-react";
 
 const VideoDetail = ({ videoId, videoTitle, videoDesc }) => {
   return (
-    <div>
+    <div className="video">
       <Embed
         className="video-player"
         active
         source="youtube"
         iframe={`https://www.youtube.com/embed/${videoId}`}
       />
-      <div>
+      <div className="title-desc">
         <h3>{videoTitle}</h3>
         <h4>{videoDesc}</h4>
       </div>
