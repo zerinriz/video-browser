@@ -22,7 +22,7 @@ const App = () => {
   };
 
   const onTitleSelected = (videoTitle) => {
-    selectedVideoTitle(videoTitle);
+    setSelectedVideoTitle(videoTitle);
   };
 
   const onDescSelected = (videoDesc) => {
