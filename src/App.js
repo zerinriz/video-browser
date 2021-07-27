@@ -14,7 +14,7 @@ const App = () => {
   const [selectedVideoDesc, setSelectedVideoDesc] = useState(null);
 
   useEffect(() => {
-    onSearch("RickRoll");
+    onSearch("React");
   }, []);
 
   const onVideoSelected = (videoId) => {
